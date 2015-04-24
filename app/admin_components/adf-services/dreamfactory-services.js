@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('dfServices', ['ngRoute', 'dfUtility', 'dfServiceTemplates', 'dfSwaggerEditor'])
+angular.module('dfServices', ['ngRoute', 'dfUtility', 'dfServiceTemplates', 'dfSwaggerEditor', 'swagger-editor'])
     .constant('MOD_SERVICES_ROUTER_PATH', '/services')
     .constant('MOD_SERVICES_ASSET_PATH', 'admin_components/adf-services/')
     .config(['$routeProvider', 'MOD_SERVICES_ROUTER_PATH', 'MOD_SERVICES_ASSET_PATH',
@@ -2143,7 +2143,7 @@ angular.module('dfServices', ['ngRoute', 'dfUtility', 'dfServiceTemplates', 'dfS
 
                     if (newValue.record.hasOwnProperty('docs') && newValue.record.docs.length) {
 
-                        scope.currentFile = newValue.record.docs[0].content;
+                        scope.currentFile = angular.fromJson(newValue.record.docs[0].content);
                     }
 
                     switch(newValue.record.type) {
