@@ -79,8 +79,18 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
 
     }])
 
-    .controller('HomeCtrl', ['$scope',
-        function($scope){
+    .controller('HomeCtrl', ['$scope', '$sce', 'dfApplicationData',
+        function($scope, $sce, dfApplicationData){
+
+            var launchUrl = function (name) {
+                return dfApplicationData.getApiData('app').filter(function (app) {
+                    if (app.hasOwnProperty('api_name') && (app.hasOwnProperty('launch_url'))) {
+                        if (app.api_name == name) {
+                            return app.launch_url;
+                        }
+                    }
+                })[0];
+            };
 
             $scope.$parent.title = 'Home';
 
@@ -89,7 +99,9 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 {
                     name: 'welcome-home',
                     label: 'Welcome',
-                    path: 'welcome-home'
+                    path: 'welcome-home',
+                    url: $sce.trustAsResourceUrl(launchUrl('welcome-home') || "//www.dreamfactory.com/in_product_welcome.html"),
+                    template: 'MOD_HOME_ASSET_PATH' + 'views/df-welcome.html'
                 },
                 {
                     name: 'quickstart-home',
@@ -99,35 +111,19 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 {
                     name: 'resource-home',
                     label: 'Resources',
-                    path: 'resource-home'
+                    path: 'resource-home',
+                    url: $sce.trustAsResourceUrl(launchUrl('resource-home') || "//www.dreamfactory.com/in_product_resources.html")
                 },
                 {
                     name: 'download-home',
                     label: 'Download',
-                    path: 'download-home'
+                    path: 'download-home',
+                    url: $sce.trustAsResourceUrl(launchUrl('download-home') || "//www.dreamfactory.com/in_product_downloads.html")
                 }
             ];
+
         }])
 
-    .directive('dfWelcome', ['$sce', 'MOD_HOME_ASSET_PATH', '$http', 'dfApplicationData', function($sce, MOD_HOME_ASSET_PATH, $http, dfApplicationData) {
-        return {
-            restrict: 'E',
-            scope: false,
-            templateUrl: MOD_HOME_ASSET_PATH + 'views/df-welcome.html',
-            link: function (scope, elem, attrs) {
-                var url = "//www.dreamfactory.com/in_product_welcome.html";
-                angular.forEach(dfApplicationData.getApiData('app'), function (app) {
-                    if (app.hasOwnProperty('api_name') && (app.hasOwnProperty('launch_url'))) {
-                        if (app.api_name == 'df-welcome') {
-                            url = app.launch_url;
-                        }
-                    }
-                });
-
-                scope.iframe_url = $sce.trustAsHtml('<iframe src="' + url + '" style="padding-bottom: 75px; height: 100%; width: 100%; border: 0px"></iframe>');
-            }
-        }
-    }])
 
     .directive('dfQuickstart', ['MOD_HOME_ASSET_PATH', 'dfApplicationData', 'dfApplicationPrefs', 'dfNotify', 'dfObjectService', 'dfStringService', function(MOD_HOME_ASSET_PATH, dfApplicationData, dfApplicationPrefs, dfNotify, dfObjectService, dfStringService) {
         return {
@@ -382,47 +378,5 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 }
             }
         }
-    }])
-
-    .directive('dfResource', ['$sce', 'MOD_HOME_ASSET_PATH', '$http', 'dfApplicationData', function($sce, MOD_HOME_ASSET_PATH, $http, dfApplicationData) {
-        return {
-            restrict: 'E',
-            scope: false,
-            templateUrl: MOD_HOME_ASSET_PATH + 'views/df-resource.html',
-            link: function (scope, elem, attrs) {
-                var url = "//www.dreamfactory.com/in_product_resources.html";
-
-                angular.forEach(dfApplicationData.getApiData('app'), function (app) {
-                    if (app.hasOwnProperty('api_name') && (app.hasOwnProperty('launch_url'))) {
-                        if (app.api_name == 'df-resources') {
-                            url = app.launch_url;
-                        }
-                    }
-                });
-
-                scope.iframe_url = $sce.trustAsHtml('<iframe src="' + url + '" width="100%" height="100%" frameborder="0"></iframe>');
-            }
-        }
-    }])
-
-    .directive('dfDownload', ['$sce', 'MOD_HOME_ASSET_PATH', '$http', 'dfApplicationData', function($sce, MOD_HOME_ASSET_PATH, $http, dfApplicationData) {
-            return {
-                restrict: 'E',
-                scope: false,
-                templateUrl: MOD_HOME_ASSET_PATH + 'views/df-download.html',
-                link: function (scope, elem, attrs) {
-                    var url = "//www.dreamfactory.com/in_product_downloads.html";
-
-                    angular.forEach(dfApplicationData.getApiData('app'), function (app) {
-                        if (app.hasOwnProperty('api_name') && (app.hasOwnProperty('launch_url'))) {
-                            if (app.api_name == 'df-downloads') {
-                                url = app.launch_url;
-                            }
-                        }
-                    });
-
-                    scope.iframe_url = $sce.trustAsHtml('<iframe src="' + url + '" style="padding-bottom: 75px; height: 100%; width: 100%; border: 0px"></iframe>');
-                }
-            }
     }])
 
