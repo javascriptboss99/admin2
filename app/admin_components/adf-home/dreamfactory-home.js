@@ -79,8 +79,8 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
 
     }])
 
-    .controller('HomeCtrl', ['$scope', '$sce', 'dfApplicationData',
-        function($scope, $sce, dfApplicationData){
+    .controller('HomeCtrl', ['$scope', '$sce', 'dfApplicationData', 'SystemConfigDataService',
+        function($scope, $sce, dfApplicationData, SystemConfigDataService){
 
             var launchUrl = function (name) {
                 return dfApplicationData.getApiData('app').filter(function (app) {
@@ -95,32 +95,28 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
             $scope.$parent.title = 'Home';
 
             // Set module links
-            $scope.links = [
+            $scope.links = SystemConfigDataService.getSystemConfig().home_tabs || [
                 {
                     name: 'welcome-home',
                     label: 'Welcome',
-                    path: 'welcome-home',
                     url: $sce.trustAsResourceUrl(launchUrl('welcome-home') || "//www.dreamfactory.com/in_product_welcome.html"),
-                    template: 'MOD_HOME_ASSET_PATH' + 'views/df-welcome.html'
-                },
-                {
-                    name: 'quickstart-home',
-                    label: 'Quickstart',
-                    path: 'quickstart-home'
                 },
                 {
                     name: 'resource-home',
                     label: 'Resources',
-                    path: 'resource-home',
                     url: $sce.trustAsResourceUrl(launchUrl('resource-home') || "//www.dreamfactory.com/in_product_resources.html")
                 },
                 {
                     name: 'download-home',
                     label: 'Download',
-                    path: 'download-home',
                     url: $sce.trustAsResourceUrl(launchUrl('download-home') || "//www.dreamfactory.com/in_product_downloads.html")
                 }
             ];
+
+            $scope.links.push({
+                name: 'quickstart-home',
+                label: 'Quickstart'
+            });
 
         }])
 
