@@ -92,6 +92,10 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 })[0];
             };
 
+            $scope.trustUrl = function (url) {
+                return $sce.trustAsResourceUrl(url);
+            }
+
             $scope.$parent.title = 'Home';
 
             // Set module links
@@ -99,17 +103,17 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 {
                     name: 'welcome-home',
                     label: 'Welcome',
-                    url: $sce.trustAsResourceUrl(launchUrl('welcome-home') || "//www.dreamfactory.com/in_product_welcome.html"),
+                    url: launchUrl('welcome-home') || "//www.dreamfactory.com/in_product_welcome.html",
                 },
                 {
                     name: 'resource-home',
                     label: 'Resources',
-                    url: $sce.trustAsResourceUrl(launchUrl('resource-home') || "//www.dreamfactory.com/in_product_resources.html")
+                    url: 'resource-home') || "//www.dreamfactory.com/in_product_resources.html"
                 },
                 {
                     name: 'download-home',
                     label: 'Download',
-                    url: $sce.trustAsResourceUrl(launchUrl('download-home') || "//www.dreamfactory.com/in_product_downloads.html")
+                    url: launchUrl('download-home') || "//www.dreamfactory.com/in_product_downloads.html"
                 }
             ];
 

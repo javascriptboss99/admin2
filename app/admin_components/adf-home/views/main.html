@@ -7,7 +7,7 @@
 
     	<div data-ng-repeat="link in links" data-ng-if="activeView.name === link.name" style="height: 100%">
     		<div style="height:100%">
-    			<iframe src="{{ link.url }}" data-ng-if="link.url" style="padding-bottom: 75px; height: 100%; width: 100%; border: 0px"></iframe>
+    			<iframe src="{{ trustUrl(link.url) }}" data-ng-if="link.url" style="padding-bottom: 75px; height: 100%; width: 100%; border: 0px"></iframe>
 
     			<div ng-if="link.name === 'quickstart-home'">
     				<df-quickstart></df-quickstart>
