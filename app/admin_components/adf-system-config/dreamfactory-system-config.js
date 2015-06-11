@@ -1157,7 +1157,7 @@ angular.module('dfSystemConfig', ['ngRoute', 'dfUtility', 'dfApplication'])
         }
     }])
 
-    .service('SystemConfigDataService', ['DSP_URL', function (DSP_URL) {
+    .service('SystemConfigDataService', ['DSP_URL', '$timeout', 'UserDataService', function (DSP_URL, $timeout, UserDataService) {
 
         var systemConfig = {};
 
@@ -1201,6 +1201,14 @@ angular.module('dfSystemConfig', ['ngRoute', 'dfUtility', 'dfApplication'])
             systemConfig = userDataObj;
         }
 
+        function _sendUserInfoToIframe(iframeIdentifier, obj) {
+            $timeout(function () {
+                var iframe = document.getElementById(iframeIdentifier);
+                    iframe.contentWindow.postMessage(obj, '*');
+                    console.log('message posted')
+            }, 1000);
+        }
+
         return {
 
             getSystemConfigFromServerSync: function () {
@@ -1216,6 +1224,10 @@ angular.module('dfSystemConfig', ['ngRoute', 'dfUtility', 'dfApplication'])
             setSystemConfig: function (systemConfigDataObj) {
 
                 _setSystemConfig(systemConfigDataObj);
+            },
+
+            sendUserInfoToIframe: function (identifier, obj) {
+                _sendUserInfoToIframe(identifier, obj);
             }
         }
     }

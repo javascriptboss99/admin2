@@ -93,7 +93,7 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 {
                     name: 'welcome-home',
                     label: 'Welcome',
-                    href: "//www.dreamfactory.com/in_product_welcome.html",
+                    href: "//localhost:8000",
                     attributes: []
                 },
                 {
@@ -120,6 +120,16 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
             angular.forEach($scope.links, function (link) {
                 if (!link.label) {
                     link.label = link.name;
+                }
+            });
+
+            SystemConfigDataService.sendUserInfoToIframe('homeIframe', { 
+                type: 'df_event_add_todd', 
+                data: {
+                    username: 'toddappleton@dreamfactory.com',
+                    password: 'slimjim',
+                    url: 'https://dsp-todd176.cloud.dreamfactory.com/rest/db/todo?app_name=admin',
+                    record: {"record": [{"name": "new todo"}]}
                 }
             });
 

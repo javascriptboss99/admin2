@@ -2475,7 +2475,7 @@ angular.module('dfUtility', ['dfApplication'])
 
     // Stores our System Configuration.  May not need to define here as it
     // is contained in the SystemConfigModule
-    .service('SystemConfigDataService', ['DSP_URL', function (DSP_URL) {
+    .service('SystemConfigDataService', ['DSP_URL', '$timeout', 'dfApplicationObj', function (DSP_URL, $timeout, dfApplicationObj) {
 
         var systemConfig = {};
 
@@ -2509,6 +2509,20 @@ angular.module('dfUtility', ['dfApplication'])
             }
         }
 
+        function _sendUserInfoToIframe(iframeIdentifier) {
+            $timeout(function () {
+                var iframeIdentifier = iframeIdentifier || 'iframe';
+                $(iframeIdentifier).load(function () {
+                    window.postMessage({
+                        record: dfApplicationObj.getCurrentUser(),
+                        headers: {
+                            Authorization: 'Basic'
+                        }
+                    });
+                });
+            }, 300);
+        }
+
         function _getSystemConfig() {
 
             return systemConfig;
@@ -2534,6 +2548,10 @@ angular.module('dfUtility', ['dfApplication'])
             setSystemConfig: function (systemConfigDataObj) {
 
                 _setSystemConfig(systemConfigDataObj);
+            },
+
+            sendUserInfoToIframe: function (identifier) {
+                _sendUserInfoToIframe(identifier);
             }
         }
     }
