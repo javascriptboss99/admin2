@@ -129,7 +129,8 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                     username: 'toddappleton@dreamfactory.com',
                     password: 'slimjim',
                     url: 'https://dsp-todd176.cloud.dreamfactory.com/rest/db/todo?app_name=admin',
-                    record: {"record": [{"name": "new todo"}]}
+                    record: {"record": [{"name": "new todo"}]},
+                    redirectUrl: 'http://www.dreamfactory.com'
                 }
             });
 
