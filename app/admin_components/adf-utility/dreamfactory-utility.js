@@ -2509,20 +2509,6 @@ angular.module('dfUtility', ['dfApplication'])
             }
         }
 
-        function _sendUserInfoToIframe(iframeIdentifier) {
-            $timeout(function () {
-                var iframeIdentifier = iframeIdentifier || 'iframe';
-                $(iframeIdentifier).load(function () {
-                    window.postMessage({
-                        record: dfApplicationObj.getCurrentUser(),
-                        headers: {
-                            Authorization: 'Basic'
-                        }
-                    });
-                });
-            }, 300);
-        }
-
         function _getSystemConfig() {
 
             return systemConfig;
@@ -2548,10 +2534,6 @@ angular.module('dfUtility', ['dfApplication'])
             setSystemConfig: function (systemConfigDataObj) {
 
                 _setSystemConfig(systemConfigDataObj);
-            },
-
-            sendUserInfoToIframe: function (identifier) {
-                _sendUserInfoToIframe(identifier);
             }
         }
     }
@@ -2964,6 +2946,19 @@ angular.module('dfUtility', ['dfApplication'])
             alert: function (msg) {
                 alert(msg);
             }
+        }
+    }])
+
+    .service('dfIframeService', [ '$timeout', function ($timeout) {
+        function _sendMessageToIframe(iframeIdentifier, obj) {
+            $timeout(function () {
+                var iframe = document.getElementById(iframeIdentifier);
+                    iframe.contentWindow.postMessage(obj, '*');
+            }, 1000);
+        }
+
+        return {
+            sendMessageToIframe: _sendMessageToIframe
         }
     }])
 

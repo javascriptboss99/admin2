@@ -79,8 +79,8 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
 
     }])
 
-    .controller('HomeCtrl', ['$scope', '$sce', 'dfApplicationData', 'SystemConfigDataService',
-        function($scope, $sce, dfApplicationData, SystemConfigDataService){
+    .controller('HomeCtrl', ['$scope', '$sce', 'SystemConfigDataService', 'dfIframeService',
+        function($scope, $sce, SystemConfigDataService, dfIframeService){
 
             $scope.trustUrl = function (url) {
                 return $sce.trustAsResourceUrl(url);
@@ -123,7 +123,7 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                 }
             });
 
-            SystemConfigDataService.sendUserInfoToIframe('homeIframe', { 
+            dfIframeService.sendMessageToIframe('homeIframe', { 
                 type: 'df_event_add_todd', 
                 data: {
                     username: 'toddappleton@dreamfactory.com',
@@ -133,7 +133,6 @@ angular.module('dfHome', ['ngRoute', 'dfUtility', 'dfApplication', 'dfHelp'])
                     redirectUrl: 'http://www.dreamfactory.com'
                 }
             });
-
         }])
 
 
